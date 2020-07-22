@@ -1,0 +1,17 @@
+<div class="container p-3">
+  <section id="values-apis">
+    <div>
+      <p class="h2">Get Values</p>
+      <button type="button" class="btn btn-primary" (click)="getValues()">
+        Call <span class="text-monospace">api/values</span>
+      </button>
+      <section class="my-2">
+        <div *ngIf="values && values.length">
+          <ul>
+            <li *ngFor="let item of values">{{ item }}</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </section>
+</div>

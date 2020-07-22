@@ -69,7 +69,7 @@ namespace JwtAuthDemo.Controllers
             // https://github.com/auth0/node-jsonwebtoken/issues/375
 
             var userName = User.Identity.Name;
-            _jwtAuthManager.RemoveRefreshTokenByUserName(userName); 
+            _jwtAuthManager.RemoveRefreshTokenByUserName(userName);
             _logger.LogInformation($"User [{userName}] logged out the system.");
             return Ok();
         }
@@ -83,11 +83,21 @@ namespace JwtAuthDemo.Controllers
                 var userName = User.Identity.Name;
                 _logger.LogInformation($"User [{userName}] is trying to refresh JWT token.");
 
+                if (string.IsNullOrWhiteSpace(request.RefreshToken))
+                {
+                    return Unauthorized();
+                }
+
                 var accessToken = await HttpContext.GetTokenAsync("Bearer", "access_token");
-                _logger.LogInformation(accessToken);
-                var response = _jwtAuthManager.Refresh(request.RefreshToken, accessToken, DateTime.Now);
+                var jwtResult = _jwtAuthManager.Refresh(request.RefreshToken, accessToken, DateTime.Now);
                 _logger.LogInformation($"User [{userName}] has refreshed JWT token.");
-                return Ok(response);
+                return Ok(new LoginResult
+                {
+                    UserName = userName,
+                    Role = User.FindFirst(ClaimTypes.Role)?.Value ?? string.Empty,
+                    AccessToken = jwtResult.AccessToken,
+                    RefreshToken = jwtResult.RefreshToken.TokenString
+                });
             }
             catch (SecurityTokenException e)
             {

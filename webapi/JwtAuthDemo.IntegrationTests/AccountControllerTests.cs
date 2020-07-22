@@ -113,11 +113,11 @@ namespace JwtAuthDemo.IntegrationTests
             var response = await _httpClient.PostAsync("api/account/refresh-token",
                 new StringContent(JsonSerializer.Serialize(refreshRequest), Encoding.UTF8, MediaTypeNames.Application.Json));
             var responseContent = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<JwtAuthResult>(responseContent);
+            var result = JsonSerializer.Deserialize<LoginResult>(responseContent);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
-            var refreshToken2 = jwtAuthManager.UsersRefreshTokensReadOnlyDictionary.GetValueOrDefault(result.RefreshToken.TokenString);
-            Assert.AreEqual(refreshToken2.TokenString, result.RefreshToken.TokenString);
+            var refreshToken2 = jwtAuthManager.UsersRefreshTokensReadOnlyDictionary.GetValueOrDefault(result.RefreshToken);
+            Assert.AreEqual(refreshToken2.TokenString, result.RefreshToken);
             Assert.AreNotEqual(refreshToken2.TokenString, jwtResult.RefreshToken.TokenString);
             Assert.AreNotEqual(jwtResult.AccessToken, result.AccessToken);
         }

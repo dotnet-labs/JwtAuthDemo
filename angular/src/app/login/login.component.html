@@ -1,0 +1,59 @@
+<div class="text-center mb-4">
+  <img
+    class="mb-4 rounded-circle"
+    src="assets/apple-icon-180x180.png"
+    alt="logo"
+    loading="lazy"
+    width="180"
+    height="180"
+  />
+  <h1 class="h3 mb-3">.NET Labs</h1>
+</div>
+
+<form class="form-signin" (ngSubmit)="login()">
+  <div class="form-label-group">
+    <input
+      type="text"
+      id="userName"
+      name="username"
+      [(ngModel)]="username"
+      class="form-control"
+      placeholder="Username"
+      required
+      autofocus
+    />
+    <label for="userName">Username</label>
+  </div>
+  <div class="form-label-group">
+    <input
+      type="password"
+      id="inputPassword"
+      name="password"
+      [(ngModel)]="password"
+      class="form-control"
+      placeholder="Password"
+      required
+    />
+    <label for="inputPassword">Password</label>
+  </div>
+
+  <div class="checkbox mb-3 text-danger" *ngIf="loginError">
+    Login failed. Please try again.
+  </div>
+  <button
+    type="submit"
+    class="btn btn-lg btn-primary btn-block"
+    [disabled]="busy"
+  >
+    Sign in
+  </button>
+
+  <div class="small text-secondary mt-3 d-none d-sm-flex">
+    <strong>Example logins:</strong>
+    <ul>
+      <li>admin: securePassword</li>
+      <li>test1: password1</li>
+      <li>test2: password2</li>
+    </ul>
+  </div>
+</form>

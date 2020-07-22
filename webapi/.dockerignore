@@ -3,6 +3,8 @@
 **/obj/
 **/out/
 **/.git/
+**/.vs/
+**/TestResults/
 **/node_modules/
 
 # files

@@ -57,9 +57,10 @@ namespace JwtAuthDemo.Infrastructure
 
         public JwtAuthResult GenerateTokens(string username, Claim[] claims, DateTime now)
         {
+            var shouldAddAudienceClaim = string.IsNullOrWhiteSpace(claims?.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Aud)?.Value);
             var jwtToken = new JwtSecurityToken(
                 _jwtTokenConfig.Issuer,
-                _jwtTokenConfig.Audience,
+                shouldAddAudienceClaim ? _jwtTokenConfig.Audience : string.Empty,
                 claims,
                 expires: now.AddMinutes(_jwtTokenConfig.AccessTokenExpiration),
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(_secret), SecurityAlgorithms.HmacSha256Signature));
@@ -98,7 +99,7 @@ namespace JwtAuthDemo.Infrastructure
                 throw new SecurityTokenException("Invalid token");
             }
 
-            return GenerateTokens(userName, principal.Claims.ToArray(), now);
+            return GenerateTokens(userName, principal.Claims.ToArray(), now); // need to recover the original claims
         }
 
         public (ClaimsPrincipal, JwtSecurityToken) DecodeJwtToken(string token)
