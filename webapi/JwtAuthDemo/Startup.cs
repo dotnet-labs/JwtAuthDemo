@@ -44,7 +44,7 @@ namespace JwtAuthDemo
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtTokenConfig.Secret)),
                     ValidAudience = jwtTokenConfig.Audience,
-                    ValidateAudience = false,
+                    ValidateAudience = true,
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.FromMinutes(1)
                 };
@@ -73,10 +73,7 @@ namespace JwtAuthDemo
                 app.UseDeveloperExceptionPage();
             }
 
-            //if (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") != "true")
-            {
-                app.UseHttpsRedirection();
-            }
+            app.UseHttpsRedirection();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

@@ -104,6 +104,10 @@ namespace JwtAuthDemo.Infrastructure
 
         public (ClaimsPrincipal, JwtSecurityToken) DecodeJwtToken(string token)
         {
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                throw new SecurityTokenException("Invalid token");
+            }
             var principal = new JwtSecurityTokenHandler()
                 .ValidateToken(token,
                     new TokenValidationParameters
@@ -113,8 +117,9 @@ namespace JwtAuthDemo.Infrastructure
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(_secret),
                         ValidAudience = _jwtTokenConfig.Audience,
-                        ValidateAudience = false,
-                        ValidateLifetime = false
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.FromMinutes(1)
                     },
                     out var validatedToken);
             return (principal, validatedToken as JwtSecurityToken);

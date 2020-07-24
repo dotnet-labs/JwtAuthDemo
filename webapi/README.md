@@ -14,5 +14,6 @@ This repository demos an ASP.NET Core web API application using JWT auth, and an
 
    ```Docker
    docker build -t jwtauthdemo_api .
-   docker run --rm -it jwtauthdemo_api
    ```
+
+   recommend to use the `docker-compose.yml` file in the parent directory to launch the app.
