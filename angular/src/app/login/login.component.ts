@@ -18,13 +18,17 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService
-  ) {
-    if (this.authService.currentUser) {
-      this.router.navigate(['']);
-    }
-  }
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.authService.user$.subscribe((x) => {
+      const accessToken = localStorage.getItem('access_token');
+      const refreshToken = localStorage.getItem('refresh_token');
+      if (x && accessToken && refreshToken) {
+        this.router.navigate(['']);
+      }
+    });
+  }
 
   login() {
     if (!this.username || !this.password) {

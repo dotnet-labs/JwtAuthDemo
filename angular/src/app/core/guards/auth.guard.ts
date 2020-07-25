@@ -8,6 +8,7 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -23,14 +24,17 @@ export class AuthGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const user = this.authService.currentUser;
-    if (user) {
-      return true;
-    } else {
-      this.router.navigate(['login'], {
-        queryParams: { returnUrl: state.url },
-      });
-      return false;
-    }
+    return this.authService.user$.pipe(
+      map((user) => {
+        if (user) {
+          return true;
+        } else {
+          this.router.navigate(['login'], {
+            queryParams: { returnUrl: state.url },
+          });
+          return false;
+        }
+      })
+    );
   }
 }

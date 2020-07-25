@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
@@ -6,30 +6,51 @@ import { map, tap, delay, finalize } from 'rxjs/operators';
 import { ApplicationUser } from '../models/application-user';
 import { environment } from 'src/environments/environment';
 
+interface LoginResult {
+  username: string;
+  role: string;
+  accessToken: string;
+  refreshToken: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthService implements OnDestroy {
   private readonly apiUrl = `${environment.apiUrl}api/account`;
   private timer: Subscription;
   private _user = new BehaviorSubject<ApplicationUser>(null);
-  public user$: Observable<ApplicationUser> = this._user.asObservable();
+  user$: Observable<ApplicationUser> = this._user.asObservable();
 
-  constructor(private router: Router, private http: HttpClient) {}
+  private storageEventListener(event: StorageEvent) {
+    if (event.storageArea === localStorage) {
+      if (event.key === 'logout-event') {
+        this._user.next(null);
+      }
+      if (event.key === 'login-event') {
+        location.reload();
+      }
+    }
+  }
 
-  public get currentUser(): ApplicationUser {
-    return this._user.value;
+  constructor(private router: Router, private http: HttpClient) {
+    window.addEventListener('storage', this.storageEventListener.bind(this));
+  }
+
+  ngOnDestroy(): void {
+    window.removeEventListener('storage', this.storageEventListener.bind(this));
   }
 
   login(username: string, password: string) {
     return this.http
-      .post<ApplicationUser>(`${this.apiUrl}/login`, { username, password })
+      .post<LoginResult>(`${this.apiUrl}/login`, { username, password })
       .pipe(
-        map((user) => {
-          this._user.next(user);
-          this.setLocalStorage(user);
+        map((x) => {
+          this._user.next({ username: x.username, role: x.role });
+          this.setLocalStorage(x);
+          localStorage.setItem('login-event', 'login' + Math.random());
           this.startTokenTimer();
-          return user;
+          return x;
         })
       );
   }
@@ -40,9 +61,10 @@ export class AuthService {
       .pipe(
         finalize(() => {
           this.clearLocalStorage();
-          this.stopTokenTimer();
+          localStorage.setItem('logout-event', 'logout' + Math.random());
           this._user.next(null);
-          this.router.navigate(['']);
+          this.stopTokenTimer();
+          this.router.navigate(['login']);
         })
       )
       .subscribe();
@@ -56,20 +78,20 @@ export class AuthService {
     }
 
     return this.http
-      .post<ApplicationUser>(`${this.apiUrl}/refresh-token`, { refreshToken })
+      .post<LoginResult>(`${this.apiUrl}/refresh-token`, { refreshToken })
       .pipe(
-        map((user) => {
-          this._user.next(user);
-          this.setLocalStorage(user);
+        map((x) => {
+          this._user.next({ username: x.username, role: x.role });
+          this.setLocalStorage(x);
           this.startTokenTimer();
-          return user;
+          return x;
         })
       );
   }
 
-  setLocalStorage(user: ApplicationUser) {
-    localStorage.setItem('access_token', user.accessToken);
-    localStorage.setItem('refresh_token', user.refreshToken);
+  setLocalStorage(x: LoginResult) {
+    localStorage.setItem('access_token', x.accessToken);
+    localStorage.setItem('refresh_token', x.refreshToken);
   }
 
   clearLocalStorage() {
