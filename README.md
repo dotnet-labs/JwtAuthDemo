@@ -1,12 +1,20 @@
-# JWT Auth Demo
+# JWT Auth Demo (Angular + ASP.NET Core)
 
-This repository demos an ASP.NET Core web API application using JWT auth, and an integration testing project for a set of actions including login, logout, refresh token, impersonation, authentication, and authorization.
+This repository demos an Angular SPA and an ASP.NET Core web API application using JWT auth, and an integration testing project for a set of actions including login, logout, refresh token, impersonation, authentication, and authorization.
 
 ## Medium Articles
 
-- [Using JWT in ASP.NET Core](https://codeburst.io/using-jwt-in-asp-net-core-148fb72bed03)
+1. [JWT Auth in ASP.NET Core](https://codeburst.io/jwt-auth-in-asp-net-core-148fb72bed03)
 
-  In this article, I will show you how to implement an ASP.NET Core web API application using JWT authentication and authorization.
+   In this article, I will show you how to implement an ASP.NET Core web API application using JWT authentication and authorization.
+
+1. [JWT Authentication in Angular](https://codeburst.io/jwt-authentication-in-angular-48cfa882832c)
+
+   In this article, we will build a simple app using Angular. We will implement an `AuthService` class to handle login, logout, and refresh token processes, as well as operations for localStorage key-value pairs. We will create a `JwtInterceptor` class to add JWT Bearer token to the HTTP request headers, and an `UnauthorizedInterceptor` class to redirect the user to the login page if an HTTP status code 401 is received. We will use an `AuthGuard` to prevent unauthenticated user from visiting the application pages.
+
+## Demo
+
+![jwt demo](./jwt-angular-app.gif)
 
 ## Solution Structure
 
