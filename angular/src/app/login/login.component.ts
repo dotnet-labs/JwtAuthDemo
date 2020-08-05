@@ -22,11 +22,14 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.user$.subscribe((x) => {
-      const accessToken = localStorage.getItem('access_token');
-      const refreshToken = localStorage.getItem('refresh_token');
-      if (x && accessToken && refreshToken) {
-        this.router.navigate(['']);
-      }
+      if (this.route.snapshot.url[0].path === 'login') {
+        const accessToken = localStorage.getItem('access_token');
+        const refreshToken = localStorage.getItem('refresh_token');
+        if (x && accessToken && refreshToken) {
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
+          this.router.navigate([returnUrl]);
+        }
+      } // optional touch-up: if a tab shows login page, then refresh the page to reduce duplicate login
     });
   }
 

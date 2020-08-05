@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 interface LoginResult {
   username: string;
   role: string;
+  originalUserName: string;
   accessToken: string;
   refreshToken: string;
 }
@@ -25,10 +26,18 @@ export class AuthService implements OnDestroy {
   private storageEventListener(event: StorageEvent) {
     if (event.storageArea === localStorage) {
       if (event.key === 'logout-event') {
+        this.stopTokenTimer();
         this._user.next(null);
       }
       if (event.key === 'login-event') {
-        location.reload();
+        this.stopTokenTimer();
+        this.http.get<LoginResult>(`${this.apiUrl}/user`).subscribe((x) => {
+          this._user.next({
+            username: x.username,
+            role: x.role,
+            originalUserName: x.originalUserName,
+          });
+        });
       }
     }
   }
@@ -46,9 +55,12 @@ export class AuthService implements OnDestroy {
       .post<LoginResult>(`${this.apiUrl}/login`, { username, password })
       .pipe(
         map((x) => {
-          this._user.next({ username: x.username, role: x.role });
+          this._user.next({
+            username: x.username,
+            role: x.role,
+            originalUserName: x.originalUserName,
+          });
           this.setLocalStorage(x);
-          localStorage.setItem('login-event', 'login' + Math.random());
           this.startTokenTimer();
           return x;
         })
@@ -61,7 +73,6 @@ export class AuthService implements OnDestroy {
       .pipe(
         finalize(() => {
           this.clearLocalStorage();
-          localStorage.setItem('logout-event', 'logout' + Math.random());
           this._user.next(null);
           this.stopTokenTimer();
           this.router.navigate(['login']);
@@ -81,7 +92,11 @@ export class AuthService implements OnDestroy {
       .post<LoginResult>(`${this.apiUrl}/refresh-token`, { refreshToken })
       .pipe(
         map((x) => {
-          this._user.next({ username: x.username, role: x.role });
+          this._user.next({
+            username: x.username,
+            role: x.role,
+            originalUserName: x.originalUserName,
+          });
           this.setLocalStorage(x);
           this.startTokenTimer();
           return x;
@@ -92,11 +107,13 @@ export class AuthService implements OnDestroy {
   setLocalStorage(x: LoginResult) {
     localStorage.setItem('access_token', x.accessToken);
     localStorage.setItem('refresh_token', x.refreshToken);
+    localStorage.setItem('login-event', 'login' + Math.random());
   }
 
   clearLocalStorage() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
+    localStorage.setItem('logout-event', 'logout' + Math.random());
   }
 
   private getTokenRemainingTime() {
