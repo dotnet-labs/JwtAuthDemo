@@ -1,5 +1,7 @@
 # JWT Auth Demo (Angular + ASP.NET Core)
 
+<a href='https://ko-fi.com/changhuixu' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi2.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+
 This repository demos an Angular SPA and an ASP.NET Core web API application using JWT auth, and an integration testing project for a set of actions including login, logout, refresh token, impersonation, authentication, and authorization.
 
 ## Medium Articles
@@ -44,3 +46,9 @@ You can also move the folders around to consolidate the solution to be one ASP.N
 - **Back-end** ([https://localhost:5001](https://localhost:5001))
 
   ![web api](./localhost_5001.png)
+
+## License
+
+Feel free to use the code in this repository as it is under MIT license.
+
+<a href='https://ko-fi.com/changhuixu' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi2.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
