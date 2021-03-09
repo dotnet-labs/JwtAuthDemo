@@ -20,7 +20,7 @@ namespace JwtAuthDemo.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            var userName = User.Identity.Name;
+            var userName = User.Identity?.Name;
             _logger.LogInformation($"User [{userName}] is viewing values.");
             return new[] { "value1", "value2" };
         }

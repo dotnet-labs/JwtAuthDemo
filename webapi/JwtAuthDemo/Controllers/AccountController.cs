@@ -67,7 +67,7 @@ namespace JwtAuthDemo.Controllers
         {
             return Ok(new LoginResult
             {
-                UserName = User.Identity.Name,
+                UserName = User.Identity?.Name,
                 Role = User.FindFirst(ClaimTypes.Role)?.Value ?? string.Empty,
                 OriginalUserName = User.FindFirst("OriginalUserName")?.Value
             });
@@ -80,7 +80,7 @@ namespace JwtAuthDemo.Controllers
             // optionally "revoke" JWT token on the server side --> add the current token to a block-list
             // https://github.com/auth0/node-jsonwebtoken/issues/375
 
-            var userName = User.Identity.Name;
+            var userName = User.Identity?.Name;
             _jwtAuthManager.RemoveRefreshTokenByUserName(userName);
             _logger.LogInformation($"User [{userName}] logged out the system.");
             return Ok();
@@ -92,7 +92,7 @@ namespace JwtAuthDemo.Controllers
         {
             try
             {
-                var userName = User.Identity.Name;
+                var userName = User.Identity?.Name;
                 _logger.LogInformation($"User [{userName}] is trying to refresh JWT token.");
 
                 if (string.IsNullOrWhiteSpace(request.RefreshToken))
@@ -121,7 +121,7 @@ namespace JwtAuthDemo.Controllers
         [Authorize(Roles = UserRoles.Admin)]
         public ActionResult Impersonate([FromBody] ImpersonationRequest request)
         {
-            var userName = User.Identity.Name;
+            var userName = User.Identity?.Name;
             _logger.LogInformation($"User [{userName}] is trying to impersonate [{request.UserName}].");
 
             var impersonatedRole = _userService.GetUserRole(request.UserName);
@@ -140,7 +140,7 @@ namespace JwtAuthDemo.Controllers
             {
                 new Claim(ClaimTypes.Name,request.UserName),
                 new Claim(ClaimTypes.Role, impersonatedRole),
-                new Claim("OriginalUserName", userName)
+                new Claim("OriginalUserName", userName ?? string.Empty)
             };
 
             var jwtResult = _jwtAuthManager.GenerateTokens(request.UserName, claims, DateTime.Now);
@@ -158,7 +158,7 @@ namespace JwtAuthDemo.Controllers
         [HttpPost("stop-impersonation")]
         public ActionResult StopImpersonation()
         {
-            var userName = User.Identity.Name;
+            var userName = User.Identity?.Name;
             var originalUserName = User.FindFirst("OriginalUserName")?.Value;
             if (string.IsNullOrWhiteSpace(originalUserName))
             {

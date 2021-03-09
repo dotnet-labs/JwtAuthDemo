@@ -72,7 +72,7 @@ namespace JwtAuthDemo.Infrastructure
                 TokenString = GenerateRefreshTokenString(),
                 ExpireAt = now.AddMinutes(_jwtTokenConfig.RefreshTokenExpiration)
             };
-            _usersRefreshTokens.AddOrUpdate(refreshToken.TokenString, refreshToken, (s, t) => refreshToken);
+            _usersRefreshTokens.AddOrUpdate(refreshToken.TokenString, refreshToken, (_, _) => refreshToken);
 
             return new JwtAuthResult
             {
@@ -89,7 +89,7 @@ namespace JwtAuthDemo.Infrastructure
                 throw new SecurityTokenException("Invalid token");
             }
 
-            var userName = principal.Identity.Name;
+            var userName = principal.Identity?.Name;
             if (!_usersRefreshTokens.TryGetValue(refreshToken, out var existingRefreshToken))
             {
                 throw new SecurityTokenException("Invalid token");

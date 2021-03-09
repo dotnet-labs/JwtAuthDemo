@@ -22,7 +22,7 @@ namespace JwtAuthDemo.Controllers
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
-            var userName = User.Identity.Name;
+            var userName = User.Identity?.Name;
             _logger.LogInformation($"User [{userName}] is viewing weather forecast.");
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast

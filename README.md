@@ -1,6 +1,6 @@
-# JWT Auth Demo (Angular + ASP.NET Core)
+# JWT Auth Demo (Angular + ASP.NET Core / ASP.NET 5+)
 
-<a href='https://ko-fi.com/changhuixu' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi2.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+<a href='https://ko-fi.com/changhuixu' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi3.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
 This repository demos an Angular SPA and an ASP.NET Core web API application using JWT auth, and an integration testing project for a set of actions including login, logout, refresh token, impersonation, authentication, and authorization.
 
@@ -35,7 +35,9 @@ The demo is configured to run by Docker Compose. The services are listed in the 
 docker-compose up --build --remove-orphans
 ```
 
-You can also move the folders around to consolidate the solution to be one ASP.NET Core web app using SPA service.
+Then visit [http://localhost:8080](http://localhost:8080) for the app, and [https://localhost:5001](https://localhost:5001) for Swagger document for the web API project.
+
+**NOTE:** You can also move the folders around to consolidate the solution as one ASP.NET Core web app using the SPA service.
 
 ## Screenshots
 
@@ -51,4 +53,4 @@ You can also move the folders around to consolidate the solution to be one ASP.N
 
 Feel free to use the code in this repository as it is under MIT license.
 
-<a href='https://ko-fi.com/changhuixu' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi2.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+<a href='https://ko-fi.com/changhuixu' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi3.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
