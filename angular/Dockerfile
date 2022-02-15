@@ -6,7 +6,7 @@ ENV CI=1
 RUN npm ci
 
 COPY . .
-RUN npm run build -- --prod --output-path=/dist
+RUN npm run build --output-path=/dist
 
 # Deploy our Angular app to NGINX
 FROM nginx:alpine

@@ -5,7 +5,7 @@ import { AuthService } from './core';
   selector: 'app-root',
   template: `
     <header>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
         <a class="navbar-brand" routerLink="">JWT Auth Demo</a>
         <button
           class="navbar-toggler"
@@ -20,7 +20,7 @@ import { AuthService } from './core';
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
+          <ul class="navbar-nav me-auto">
             <li class="nav-item" routerLinkActive="active">
               <a class="nav-link" routerLink="demo-apis">Demo APIs</a>
             </li>

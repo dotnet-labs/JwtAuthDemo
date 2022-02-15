@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
   constructor(public authService: AuthService) {}
 
   ngOnInit(): void {
-    this.accessToken = localStorage.getItem('access_token');
-    this.refreshToken = localStorage.getItem('refresh_token');
+    this.accessToken = localStorage.getItem('access_token') ?? '';
+    this.refreshToken = localStorage.getItem('refresh_token') ?? '';
   }
 }

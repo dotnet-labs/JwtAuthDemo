@@ -19,9 +19,9 @@ interface LoginResult {
 })
 export class AuthService implements OnDestroy {
   private readonly apiUrl = `${environment.apiUrl}api/account`;
-  private timer: Subscription;
-  private _user = new BehaviorSubject<ApplicationUser>(null);
-  user$: Observable<ApplicationUser> = this._user.asObservable();
+  private timer: Subscription | null = null;
+  private _user = new BehaviorSubject<ApplicationUser | null>(null);
+  user$ = this._user.asObservable();
 
   private storageEventListener(event: StorageEvent) {
     if (event.storageArea === localStorage) {
@@ -81,7 +81,7 @@ export class AuthService implements OnDestroy {
       .subscribe();
   }
 
-  refreshToken() {
+  refreshToken(): Observable<LoginResult | null> {
     const refreshToken = localStorage.getItem('refresh_token');
     if (!refreshToken) {
       this.clearLocalStorage();
@@ -131,7 +131,9 @@ export class AuthService implements OnDestroy {
     this.timer = of(true)
       .pipe(
         delay(timeout),
-        tap(() => this.refreshToken().subscribe())
+        tap({
+          next: () => this.refreshToken().subscribe(),
+        })
       )
       .subscribe();
   }
