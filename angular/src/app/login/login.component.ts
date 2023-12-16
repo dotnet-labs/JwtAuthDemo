@@ -44,14 +44,14 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authService
       .login(this.username, this.password)
       .pipe(finalize(() => (this.busy = false)))
-      .subscribe(
-        () => {
+      .subscribe({
+        next: () => {
           this.router.navigate([returnUrl]);
         },
-        () => {
+        error: () => {
           this.loginError = true;
-        }
-      );
+        },
+      });
   }
 
   ngOnDestroy(): void {

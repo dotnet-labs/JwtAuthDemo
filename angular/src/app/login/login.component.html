@@ -37,12 +37,12 @@
     <label for="inputPassword">Password</label>
   </div>
 
-  <div class="checkbox mb-3 text-danger" *ngIf="loginError">
+  <div class="mb-3 text-danger" *ngIf="loginError">
     Login failed. Please try again.
   </div>
   <button
     type="submit"
-    class="btn btn-lg btn-primary btn-block"
+    class="btn btn-lg btn-primary"
     [disabled]="busy"
   >
     Sign in

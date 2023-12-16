@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JwtAuthDemo", "JwtAuthDemo\JwtAuthDemo.csproj", "{4E18EEF3-99D2-414A-9AA9-4F762CC365B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JwtAuthDemo", "JwtAuthDemo\JwtAuthDemo.csproj", "{4E18EEF3-99D2-414A-9AA9-4F762CC365B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JwtAuthDemo.IntegrationTests", "JwtAuthDemo.IntegrationTests\JwtAuthDemo.IntegrationTests.csproj", "{CC31D8C6-6B10-4F38-8199-D67CD3E676BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JwtAuthDemo.IntegrationTests", "JwtAuthDemo.IntegrationTests\JwtAuthDemo.IntegrationTests.csproj", "{CC31D8C6-6B10-4F38-8199-D67CD3E676BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

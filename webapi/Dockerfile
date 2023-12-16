@@ -1,4 +1,4 @@
-ARG VERSION=5.0-alpine
+ARG VERSION=8.0-alpine
 
 FROM mcr.microsoft.com/dotnet/sdk:$VERSION AS build
 WORKDIR /app

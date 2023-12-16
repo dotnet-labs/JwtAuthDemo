@@ -1,22 +1,16 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace JwtAuthDemo.Infrastructure
+namespace JwtAuthDemo.Infrastructure;
+
+public class JwtTokenConfig
 {
-    public class JwtTokenConfig
-    {
-        [JsonPropertyName("secret")]
-        public string Secret { get; set; }
+    [JsonPropertyName("secret")] public string Secret { get; set; } = string.Empty;
 
-        [JsonPropertyName("issuer")]
-        public string Issuer { get; set; }
+    [JsonPropertyName("issuer")] public string Issuer { get; set; } = string.Empty;
 
-        [JsonPropertyName("audience")]
-        public string Audience { get; set; }
+    [JsonPropertyName("audience")] public string Audience { get; set; } = string.Empty;
 
-        [JsonPropertyName("accessTokenExpiration")]
-        public int AccessTokenExpiration { get; set; }
+    [JsonPropertyName("accessTokenExpiration")] public int AccessTokenExpiration { get; set; }
 
-        [JsonPropertyName("refreshTokenExpiration")]
-        public int RefreshTokenExpiration { get; set; }
-    }
+    [JsonPropertyName("refreshTokenExpiration")] public int RefreshTokenExpiration { get; set; }
 }

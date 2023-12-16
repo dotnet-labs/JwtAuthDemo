@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { map, tap, delay, finalize } from 'rxjs/operators';
 import { ApplicationUser } from '../models/application-user';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../environments/environment';
 
 interface LoginResult {
   username: string;
@@ -19,7 +19,7 @@ interface LoginResult {
 })
 export class AuthService implements OnDestroy {
   private readonly apiUrl = `${environment.apiUrl}api/account`;
-  private timer: Subscription | null = null;
+  private timer?: Subscription;
   private _user = new BehaviorSubject<ApplicationUser | null>(null);
   user$ = this._user.asObservable();
 
@@ -69,7 +69,7 @@ export class AuthService implements OnDestroy {
 
   logout() {
     this.http
-      .post<unknown>(`${this.apiUrl}/logout`, {})
+      .post(`${this.apiUrl}/logout`, {})
       .pipe(
         finalize(() => {
           this.clearLocalStorage();

@@ -17,3 +17,11 @@ This repository demos an ASP.NET Core web API application using JWT auth, and an
    ```
 
    recommend to use the `docker-compose.yml` file in the parent directory to launch the app.
+
+## JWT secret
+
+Generate a secret string
+
+```bash
+$ openssl rand -base64 60
+```
